@@ -1,37 +1,22 @@
+from argparse import ArgumentParser
+
 import httpx
 from geocode.geocode import Geocode
-from gooey import Gooey, GooeyParser
-
-from dark_mode import (
-    ITEM_DARK_MODE_DEFAULTS,
-    GLOBAL_DARK_MODE_DEFAULTS,
-    MACOS_DARK_MODE_ENABLED,
-)
+from gooey import Gooey
 
 
-@Gooey(
-    program_name="Demo Weather App",
-    **GLOBAL_DARK_MODE_DEFAULTS,
-)
+@Gooey(program_name="Demo Weather App")
 def main():
     gc = Geocode()
     gc.load()
 
-    parser = GooeyParser(description="Get weather forecast")
-
-    if MACOS_DARK_MODE_ENABLED:
-        for group in parser.parser._action_groups:
-            group.gooey_options = {
-                "label_color": "#ffffff",
-                "description_color": "#363636",
-            }
+    parser = ArgumentParser(description="Get weather forecast")
 
     parser.add_argument(
         "city",
         metavar="City",
         help="Enter the name of a city",
         default="Los Angeles, CA",
-        gooey_options=ITEM_DARK_MODE_DEFAULTS,
     )
 
     args = parser.parse_args()
